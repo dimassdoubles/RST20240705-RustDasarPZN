@@ -116,4 +116,97 @@ fn boolean() {
     println!("{} {}", a, b);
 }
 
+#[test]
+fn char_type() {
+    let a = 'c';
 
+    println!("{}", a);
+}
+
+#[test]
+fn tuple() {
+    /*
+    bisa berisi lebih dari 1 tipe data
+    length is final, tidak bisa berkurang atau bertambah
+    */
+
+    let data: (i32, f64, bool) = (10, 10.5, true);
+    println!("{:?}", data); // :? untuk debug information
+
+    println!("{}", data.0);
+
+    let b = data.1;
+    println!("{}", b);
+}
+
+#[test]
+fn destructuring_tuple() {
+    let data: (i32, f64, bool) = (10, 10.5, true);
+    println!("{:?}", data);
+
+    let (a, _, c) = data;
+    println!("{} {}", a, c);
+}
+
+#[test]
+fn mut_tuple() {
+    let mut data: (i32, f64, bool) = (10, 10.5, true);
+    println!("{:?}", data);
+
+    data.0 = 9;
+    data.1 = 9.5;
+    data.2 = false;
+    println!("{:?}", data);
+}
+
+fn unit() {
+    // tuple kosong
+    println!("Hello");
+}
+
+#[test]
+fn test_unit() {
+    let result = unit();
+    println!("{:?}", result);
+}
+
+#[test]
+fn array() {
+    /* 
+    sama seperti tuple tapi tipe datanya sejenis 
+    */
+
+    let array: [i32; 5] = [1, 2, 3, 4, 5]; // secara explisit
+    // let array = [1, 2, 3, 4, 5]; secara implisit
+    println!("{:?}", array);
+
+    println!("{}", array[0]);
+
+    let length = array.len();
+    println!("{}", length);
+}
+
+#[test]
+fn mut_array() {
+    let mut array = [1, 2, 3, 4, 5];
+    println!("{:?}", array);
+
+    array[0] = 10;
+    array[1] = 20;
+
+    println!("{:?}", array);
+}
+
+#[test]
+fn two_dimensional_array() {
+    let array2d = [[1, 2, 3], [4, 5, 6]];
+    println!("{:?}", array2d);
+
+    println!("{}", array2d[1][0]);
+}
+
+#[test]
+fn constant() {
+    const MINIMUM: &str = "Hello World!";
+    println!("{}", MINIMUM);
+}
