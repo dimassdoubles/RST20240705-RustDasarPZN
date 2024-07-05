@@ -1,3 +1,5 @@
+use std::mem;
+
 fn main() {
     println!("Hello, world!");
 }
@@ -209,4 +211,82 @@ fn two_dimensional_array() {
 fn constant() {
     const MINIMUM: &str = "Hello World!";
     println!("{}", MINIMUM);
+}
+
+#[test]
+fn variable_scope() {
+    let eko = 1;
+
+    {
+        // inner scope
+        println!("inner eko: {}", eko);
+        let kurniawan = 2;
+        println!("inner kurniawan: {}", kurniawan);
+    }
+
+    // println!("inner kurniawan: {}", kurniawan); //error
+}
+
+#[test]
+fn stack_heap() {
+    function_a();
+    function_b();
+}
+
+fn function_a() {
+    let a = 10; // disimpan di stack
+    let b = String::from("Dimas"); // disimpan diheap karena bisa membesar dan mengecil
+    println!("{} {}", a, b);
+}
+
+fn function_b() {
+    let a = 10;
+    let b = String::from("Saputro");
+    println!("{} {}", a, b);
+}
+
+#[test]
+fn string_type() {
+    let a = "Dimas"; // string slice, disimpan di stack, fix sized
+    let b = String::from("Dimas"); // String, disimpan di heap, data bisa mengembang
+
+    let size_of_string_slice = mem::size_of_val(&a);
+    let size_of_string = mem::size_of_val(&b);
+
+    /*
+    alokasi memori lebih banyak karena menyimpan pointer ke data, panjang, dan kapasitas
+    in this case: 24 bytes
+    */
+    println!("Ukuran memori dari String: {} bytes", size_of_string);
+
+    /* 
+    alokasi hanya menyimpan referensi ke data dan panjangnya, jadi lebih kecil
+    in this case: 16 bytes
+    */
+    println!("Ukuran memori dari &str: {} bytes", size_of_string_slice);
+
+
+    println!("Alamat memori dari String: {:p}", &b); // alamat variabel
+    println!("Alamat memory dari data String: {:p}", b.as_ptr()); // alamat pointer
+    println!("Alamat memori dari &str: {:p}", &a); // alamat variabel
+    println!("Alamat memori dari data &str: {:p}", a.as_ptr()); // alamat pointer
+}
+
+#[test]
+fn string_slice() {
+    let name = "  Dimas Saputro  ";
+    let trim = name.trim();
+
+    println!("{} {}", name, trim);
+}
+
+#[test]
+fn string() {
+    let mut name: String = String::from("Dimas Saputro");
+    name.push_str(" Khannedy");
+
+    println!("{}", name);
+
+    let budi = name.replace("Dimas", "Budi");
+    println!("{}", budi);
 }
