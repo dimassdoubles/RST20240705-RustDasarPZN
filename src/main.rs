@@ -494,3 +494,56 @@ fn test_recursive() {
 
     println!("Result: {}", result);
 }
+
+
+fn print_number(number: i32)  {
+    println!("number: {}", number);
+}
+
+fn hi(name: String) {
+    println!("Hi, {}", name);
+}
+
+fn full_name(first_name: String, last_name: String) -> String {
+    format!("{} {}", first_name, last_name)
+}
+
+#[test]
+fn ownership_function() {
+    let number = 10;
+    let name = String::from("Dimas Saputro");
+    println!("number: {}", number);
+    println!("name: {}", name);
+
+    print_number(number);
+    hi(name);
+
+    println!("number: {}", number);
+    // println!("name: {}", name); // ownershipnya dipindahkan ke parameter hi
+
+    let first_name = String::from("Dimas");
+    let last_name = String::from("Saputro");
+    println!("{} {}", first_name, last_name);
+
+    let my_name = full_name(first_name, last_name);
+    // println!("{} {}", first_name, last_name); // ownershipnya sudah berpindah
+    println!("{}", my_name);
+}
+
+fn full_name_2(first_name: String, last_name: String) -> (String, String, String) {
+    let full_name = format!("{} {}", first_name, last_name);
+
+    (first_name, last_name, full_name)
+}
+
+#[test]
+fn mengembalikan_ownership() {
+    let first_name = String::from("Dimas");
+    let last_name = String::from("Saputro");
+    println!("{} {}", first_name, last_name);
+
+    let (first_name, last_name, full_name) = full_name_2(first_name, last_name);
+    println!("{}", full_name);
+    println!("{}", first_name);
+    println!("{}", last_name);
+}
