@@ -339,3 +339,104 @@ fn clone() {
 
     println!("{} {}", name1, name2);
 }
+
+#[test]
+fn if_expression() {
+    // let value = 6;
+    // let result = if value >= 8 {
+    //     "Good";
+    // } else if value >= 6 {
+    //     "Not Bad";
+    // } else {
+    //     "Bad";
+    // };
+
+    // println!("{}", result);
+}
+
+#[test]
+fn loop_expression() {
+    let mut counter = 0;
+
+    let result = loop {
+        counter += 1;
+        if counter > 10 {
+            break counter * 2;
+        } else if counter % 2 == 0 {
+            continue;
+        }
+
+        println!("Counter: {}", counter);
+    };
+
+    println!("{}", result);
+}
+
+#[test]
+fn loop_label() {
+    let mut number = 1;
+    'outer: loop {
+        let mut i = 1;
+        loop { // loop inner
+            if number > 10 {
+                break 'outer; // akan menghentikan loop outer
+            }
+
+            println!("{} x {} = {}", number, i, number * i);
+            i += 1;
+            if i > 10 {
+                break; // hanya akan mengentkan loop inner
+            }
+        }
+
+        number += 1;
+    }
+}
+
+#[test]
+fn while_loop() {
+    let mut counter = 0;
+    while counter <= 10 {
+        if counter % 2 == 0 {
+            println!("Counter: {}", counter);
+        }
+
+        counter += 1;
+    }
+}
+
+#[test]
+fn for_loop() {
+    // iterasi array
+    let array: [&str; 5] = ["A", "B", "C", "D", "E"];
+    
+    for value in array {
+        println!("Value {}", value);
+    }
+}
+
+#[test]
+fn range_exclusive() {
+    // range dimulai dari start, dan berakhir sebelum end
+    let range = 0..5;
+    println!("Start: {}", range.start);
+    println!("End: {}", range.end);
+
+    for i in range {
+        println!("Value {}", i);
+
+    }
+}
+
+
+#[test]
+fn range_inclusive() {
+    // range dimulai dari start, dan berakhir di end
+    let range = 0..=5;
+    println!("Start: {}", range.start());
+    println!("End: {}", range.end());
+
+    for i in range {
+        println!("Value {}", i);
+    }
+}
