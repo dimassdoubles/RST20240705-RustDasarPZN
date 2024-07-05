@@ -290,3 +290,52 @@ fn string() {
     let budi = name.replace("Dimas", "Budi");
     println!("{}", budi);
 }
+
+#[test]
+fn ownership_rules() {
+    // a tidak bisa diakses disini, belum dideklarasikan
+    let a = 10; // a bisa diakses mulai dari sini
+
+    { // b tidak isa diakses disini, belum dideklarasikan
+        let b = 20; // b mulai bisa diakses dari sini
+        println!("{}", b);
+    } // scope b selesai, b dihapus, b tidak bisa diakses
+
+    println!("{}", a);
+} // scope a selesai, a dihapus, a tidak bisa diakses lagi
+
+
+#[test]
+fn data_copy() {
+    // cuma terjadi untuk data yang disimpan di stack (fix size)
+    let a = 10;
+    let b = a; // copy data dari a ke b
+    // jadi di stack itu ada a = 10, dan b = 10
+    // bukan a = b = 10
+
+    println!("{} {}", a, b);
+}
+
+#[test]
+fn ownership_movement() {
+    let name1 = String::from("Dimas Saputro");
+
+    // ownership dari name1 dipindahkan ke name2
+    let name2 = name1;
+    // name1 tidak bisa diakses mulai dari sini
+
+    // println!("{}", name1); // error
+    println!("{}", name2);
+}
+
+#[test]
+fn clone() {
+    // membuat data tiruan yang sama dengan data aslinya
+    // kalau data yang di stack itu di copy, yang di heap itu di clone
+
+    let name1 = String::from("Dimas Saputro");
+
+    let name2 = name1.clone();
+
+    println!("{} {}", name1, name2);
+}
