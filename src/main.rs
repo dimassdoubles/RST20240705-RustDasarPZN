@@ -711,3 +711,72 @@ fn struct_tanpa_field() {
     let _nothing1 = Nothing;
     let _nothing2 = Nothing {};
 }
+
+impl Person {
+    // function yang di dalam impl ini disebut associated functions
+    // associated function yang punya parameter self disebut method
+
+    fn say_hello(&self, name: &str) { // reference self agar ownership tidak berpindah
+        println!("Hello, {} my name is {}", name, self.first_name);
+    }
+}
+
+impl GeoPoint {
+    fn say_hello() {
+        println!("Hello World");
+    }
+}
+
+impl GeoPoint {
+    fn say_hello_2() {
+        println!("Hello World 2");
+    }
+}
+
+#[test]
+fn method() {
+    let person = Person {
+        first_name: String::from("Dimas"),
+        middle_name: String::from(" "),
+        last_name: String::from("Saputro"),
+        age: 20,
+    };
+
+    person.say_hello("Eko");
+    GeoPoint::say_hello();
+    GeoPoint::say_hello_2();
+}
+
+
+enum Level {
+    Regular,
+    Premium,
+    Platinum,
+}
+
+enum Payment {
+    // card number
+    CreditCard(String),
+
+    // bank name, account number
+    BankTransfer(String, String),
+
+    // ewaller name, ewallet number
+    EWallet(String, String),
+}
+
+impl Payment {
+    fn pay(&self, amount: u32) {
+        println!("Paying amount {}", amount);
+    }
+}
+
+#[test]
+fn test_enum() {
+    let _level = Level::Platinum;
+    let _payment = Payment::BankTransfer(String::from("BCA"), String::from("123456789"));
+
+    _payment.pay(12000);
+    
+    // secara default, data enum tidak bisa diakses
+}
