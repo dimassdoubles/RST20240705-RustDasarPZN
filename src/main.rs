@@ -619,3 +619,15 @@ fn slice() {
     println!("{:?}", &array[range_to_inclusive]);
 }
 
+
+#[test]
+fn string_slice2() {
+    let name = String::from("Dimas Saputro");
+    let first_name = &name[..5];
+    println!("{}", first_name);
+
+    let last_name = &name[6..];
+    println!("{}", last_name);
+
+}
+
