@@ -1,4 +1,4 @@
-use std::mem;
+use std::{mem, ops::RangeInclusive};
 
 fn main() {
     println!("Hello, world!");
@@ -584,17 +584,38 @@ fn mutable_reference() {
     println!("{}", value);
 }
 
-// dangling pointer
-// pointer yang mengarah ke value yang tidak ada di memori
-fn dangling(value: String) -> &String {
-    &value 
-}
+// // dangling pointer
+// // pointer yang mengarah ke value yang tidak ada di memori
+// fn dangling(value: String) -> &String {
+//     &value 
+// }
+
+// #[test]
+// fn dangling_test() {
+//     let x = String::from("Dimas");
+//     let x_pointer = dangling(x); // ownership x berpindah ke parameter fungsi dangling
+//     // setelah dangling selesai, parameter dihapus karena variable scope
+//     // x_pointer menunjuk ke value yang tidak ada di alamat memori 
+
+// }
 
 #[test]
-fn dangling_test() {
-    let x = String::from("Dimas");
-    let x_pointer = dangling(x); // ownership x berpindah ke parameter fungsi dangling
-    // setelah dangling selesai, parameter dihapus karena variable scope
-    // x_pointer menunjuk ke value yang tidak ada di alamat memori 
+fn slice() {
+    // slice = reference ke sebagian elemen dari data collection (ex: array)
 
+    let array: [i32; 5] = [0, 1, 2, 3, 4];
+    let range_exclusive = 1..3; // 1, 2
+    let range_inclusive = 1..=3; // 1, 2, 3
+    let range_from = 1..;
+    let range_full = ..;
+    let range_to_exclusive = ..3; // 0, 1, 2
+    let range_to_inclusive = ..=3; // 0, 1, 2, 3
+
+    println!("{:?}", &array[range_exclusive]);
+    println!("{:?}", &array[range_inclusive]);
+    println!("{:?}", &array[range_from]);
+    println!("{:?}", &array[range_full]);
+    println!("{:?}", &array[range_to_exclusive]);
+    println!("{:?}", &array[range_to_inclusive]);
 }
+
