@@ -631,3 +631,83 @@ fn string_slice2() {
 
 }
 
+struct Person {
+    first_name: String,
+    middle_name: String,
+    last_name: String,
+    age: u8,
+}
+
+fn print_person(person: &Person) {
+    println!("{} {}", person.first_name, person.last_name);
+}
+
+#[test]
+fn test_struct() {
+    let person: Person = Person {
+        last_name: String::from("Saputro"),
+        first_name: String::from("Dimas"),
+        middle_name: String::from(" "),
+        age: 20,
+    };
+
+    print_person(&person);
+
+    println!("{} {}", person.first_name, person.last_name);
+}
+
+
+#[test]
+fn init_shorthand() {
+    let first_name = String::from("Dimas");
+    let last_name = String::from("Saputro");
+
+    let person = Person {
+        first_name,
+        last_name,
+        middle_name: String::from(""),
+        age: 20,
+    };
+
+    println!("{} {}", person.first_name, person.last_name);
+}
+
+#[test]
+fn struct_update() {
+    let mut person = Person {
+        first_name: String::from("Dimas"),
+        last_name: String::from("Saputro"),
+        middle_name: String::from(" "),
+        age: 20,
+    };
+    print_person(&person);
+
+    let person2 = Person {..person};
+    print_person(&person2);
+    // print_person(&person); // ownershipnya pindah ke person2
+
+    let person3 = Person {
+        first_name: person2.first_name.clone(),
+        middle_name: person2.middle_name.clone(),
+        last_name: person2.last_name.clone(),
+        ..person2
+    };
+    print_person(&person3);
+    print_person(&person2);
+}
+
+struct GeoPoint(f64, f64);
+
+#[test]
+fn tuple_struct() {
+    let geo_point = GeoPoint(-6.9999, 106.9999);
+    println!("{} {}", geo_point.0, geo_point.1);
+}
+
+struct Nothing; // sama aja seperti unit ()
+
+#[test]
+fn struct_tanpa_field() {
+    let _nothing1 = Nothing;
+    let _nothing2 = Nothing {};
+}
