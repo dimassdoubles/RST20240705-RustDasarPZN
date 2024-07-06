@@ -302,7 +302,7 @@ fn ownership_rules() {
     } // scope b selesai, b dihapus, b tidak bisa diakses
 
     println!("{}", a);
-} // scope a selesai, a dihapus, a tidak bisa diakses lagi
+} // scope a selesai, a dihapus, a tidak bisa diakses  
 
 
 #[test]
@@ -546,4 +546,55 @@ fn mengembalikan_ownership() {
     println!("{}", full_name);
     println!("{}", first_name);
     println!("{}", last_name);
+}
+
+fn full_name3(first_name: &String, last_name: &String) -> String {
+    format!("{} {}", first_name, last_name)
+}
+
+#[test]
+fn reference() {
+    // proses pembuatan reference dinamakan borrowing
+    // menggunakan value, tanpa transfer ownership
+
+    let first_name = String::from("Dimas");
+    let last_name = String::from("Saputro");
+
+    let name = full_name3(&first_name, &last_name);
+    println!("{}", name);
+    println!("{}", first_name);
+    println!("{}", last_name);
+}
+
+
+fn change_value(value: &mut String) {
+    value.push_str("Hello");
+}
+
+#[test]
+fn mutable_reference() {
+    // defaultnya reference itu imutable
+
+    let mut value = String::from("Dimas");
+
+    let value_borrow = &mut value;    
+    // let value_borrow2 = &mut value; // pada satu waktu cuma boleh ada satu reference (jika ada mutable reference)  
+
+    change_value(value_borrow);
+    println!("{}", value);
+}
+
+// dangling pointer
+// pointer yang mengarah ke value yang tidak ada di memori
+fn dangling(value: String) -> &String {
+    &value 
+}
+
+#[test]
+fn dangling_test() {
+    let x = String::from("Dimas");
+    let x_pointer = dangling(x); // ownership x berpindah ke parameter fungsi dangling
+    // setelah dangling selesai, parameter dihapus karena variable scope
+    // x_pointer menunjuk ke value yang tidak ada di alamat memori 
+
 }
