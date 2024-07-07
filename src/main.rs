@@ -917,3 +917,24 @@ fn test_match_expression() {
     println!("Result {}", result);
 }
  
+type Age = u8;
+type IdentityNumber = String;
+
+struct Customer {
+    id: IdentityNumber,
+    name: String,
+    age: Age,
+}
+
+
+#[test]
+fn type_alias() {
+    let customer = Customer {
+        id: String::from("12947287"),
+        name: String::from("Dimas Saputro"),
+        age: 22,
+    };
+
+    println!("{}", customer.name);
+}
+ 
