@@ -1,6 +1,14 @@
-use std::{collections::btree_map::Values, mem, ops::RangeInclusive};
+use std::{collections::btree_map::Values, fmt::format, mem, ops::RangeInclusive};
 use first::say_hellobro;
 use second::say_hellobro as say_hellobro_second;
+
+
+mod third_module;
+use third_module::say_hellomas as say_hellomas_third;
+#[test]
+fn test_crate() {
+    say_hellomas_third();
+}
 
 
 mod first_module;
@@ -18,6 +26,10 @@ fn module_terpisah() {
     say_hellomas_second();
 }
 
+#[test]
+fn super_keyword() {
+    first_module::sub_first::sub_sub_first::say_hello_sub();
+}
 
 mod first {
     pub fn say_hellobro() {
@@ -1008,3 +1020,159 @@ fn type_alias() {
     println!("{}", customer.name);
 }
  
+
+trait CanSayHello {
+    fn say_hello(&self) -> String;
+    fn say_hello_to(&self, name: &str) -> String;
+
+    // default implementation
+    fn hello(&self) -> String {
+        String::from("hello")
+    }
+}
+
+impl CanSayHello for Person {
+    fn say_hello(&self) -> String {
+        format!("Hello, my name is {}", self.first_name)
+    }
+
+    fn say_hello_to(&self, name: &str) -> String {
+        format!("Hello {}, my name is {}", name, self.first_name)
+    }
+}
+
+#[test]
+fn test_trait() {
+    let person = Person {
+        first_name: String::from("Dimas"),
+        middle_name: String::from(" "),
+        last_name: String::from("Saputro"),
+        age: 20,
+    };
+
+    let message = person.say_hello_to("Fitria");
+    println!("{}", message);
+
+    let result = person.hello();
+    println!("{}", result);
+}
+
+fn say_hello_trait(person: &impl CanSayHello) {
+    println!("{}", person.say_hello_to("Fitria"));
+}
+
+#[test]
+fn trait_as_parameter() {
+    let person = Person {
+        first_name: String::from("Dimas"),
+        middle_name: String::from(" "),
+        last_name: String::from("Saputro"),
+        age: 20,
+    };
+
+    say_hello_trait(&person);
+}
+
+trait CanSayGoodBye {
+    fn good_bye(&self) -> String;
+    fn good_bye_to(&self, name: &str) -> String;
+}
+
+impl CanSayGoodBye for Person {
+    fn good_bye(&self) -> String {
+        format!("Good bye")
+    }
+
+    fn good_bye_to(&self, name: &str) -> String {
+        format!("Good bye, {}", name)
+    }
+}
+
+fn hello_and_goodbye(value: &(impl CanSayHello + CanSayGoodBye)) {
+    println!("{}", value.say_hello_to("Fitria"));
+    println!("{}", value.good_bye_to("Fitria"));
+}
+
+#[test]
+fn test_multiple_trait() {
+    let person = Person {
+        first_name: String::from("Dimas"),
+        middle_name: String::from(" "),
+        last_name: String::from("Saputro"),
+        age: 20,
+    };
+
+    hello_and_goodbye(&person);
+}
+
+struct SimplePerson {
+    name: String,
+}
+
+
+
+impl CanSayGoodBye for SimplePerson {
+    fn good_bye(&self) -> String {
+        format!("Good bye, my name is {}", self.name)
+    }
+    
+    fn good_bye_to(&self, name: &str) -> String {
+        format!("Good bye {}, my name is {}", name, self.name)
+    }
+}
+
+fn create_person(name: String) -> impl CanSayGoodBye {
+    SimplePerson {name}
+}
+
+#[test]
+fn test_return_trait() {
+    let simple_person = create_person(String::from("Dimas Saputro"));
+    println!("Hello {}", simple_person.good_bye());
+}
+
+#[test]
+fn conflict_method() {
+    let person = Person {
+        last_name: String::from("Dimas"),
+        middle_name: String::from(" "),
+        first_name: String::from("Saputro"),
+        age: 20,
+    };
+
+    Person::say_hello(&person, "Budi");
+    CanSayHello::say_hello(&person);
+}
+
+
+trait CanSay: CanSayHello + CanSayGoodBye {
+    fn say(&self) {
+        println!("{}", self.say_hello());
+    }
+}
+
+struct SimpleMan {
+    name: String,
+}
+
+impl CanSayHello for SimpleMan {
+    fn say_hello(&self) -> String {
+        String::from("Hello")
+    }
+
+    fn say_hello_to(&self, name: &str) -> String {
+        String::from("Hello to")
+    }
+}
+
+impl CanSayGoodBye for SimpleMan {
+    fn good_bye(&self) -> String {
+        String::from("Good bye")
+    }
+
+    fn good_bye_to(&self, name: &str) -> String {
+        String::from("Good bye to")
+    }
+}
+
+impl CanSay for SimpleMan {}
