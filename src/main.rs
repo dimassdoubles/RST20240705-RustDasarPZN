@@ -1,4 +1,4 @@
-use std::{mem, ops::RangeInclusive};
+use std::{collections::btree_map::Values, mem, ops::RangeInclusive};
 
 fn main() {
     println!("Hello, world!");
@@ -780,3 +780,140 @@ fn test_enum() {
     
     // secara default, data enum tidak bisa diakses
 }
+
+
+impl Payment {
+    fn checkout(&self, amount: u32) {
+        match self {
+            Payment::CreditCard(number) => {
+                println!("Paying with credit card {} amount {}", number, amount);
+            }
+            Payment::BankTransfer(bank_name, number ) => {
+                println!("Paying with bank transfer {} {} amount {}", bank_name, number, amount);
+            }
+            Payment::EWallet(name, number ) => {
+                println!("Pating with EWallet {} {} amount {}", name, number, amount);
+            }
+        }
+    }
+}
+
+#[test]
+fn pattern_matching() {
+    let level = Level::Platinum;
+    match level {
+        Level::Regular => {
+            println!("Regular");
+        }
+        Level::Premium => {
+            println!("Premium");
+        }
+        Level::Platinum => {
+            println!("Platinum");
+        }
+    }
+
+    let payment = Payment::BankTransfer(String::from("BCA"), String::from("123456789"));
+
+    payment.checkout(120000);
+}
+
+#[test]
+fn test_match_value() {
+    let name = "Dimas Saputro";
+
+    match name {
+        "Dimas" => {
+            println!("Hello Dimas");
+        }
+        "Saputro" | "Dimas Saputro"=> {
+            println!("Hello Saputro");
+        }
+        other => {
+            println!("Kenalan dulu {}", other);
+        }
+    }
+}
+
+
+#[test]
+fn test_match_range() {
+    let nilai = 50;
+    match nilai {
+        81..=100 => {
+            println!("Good Job")
+        }
+        51..=80 => {
+            println!("Not Bad")
+        }
+        0..=50 => {
+            println!("Bad")
+        }
+        other => {
+            println!("Salah input nilai")
+        }
+    }
+}
+
+
+#[test]
+fn test_match_struct() {
+    let point = GeoPoint(1.0, 2.0);
+    match point {
+        GeoPoint(long, 0.0) => {
+            println!("long: {}", long);
+        }
+        GeoPoint(0.0, lat) => {
+            println!("lat: {}", lat)
+        }
+        GeoPoint(lat, long) => {
+            println!("lat: {}, long: {}", lat, long)
+        }
+    }
+
+    let person = Person {
+        first_name: String::from("Dimas"),
+        middle_name: String::from(" "),
+        last_name: String::from("Saputro"),
+        age: 20,
+    };
+
+    match person {
+        Person {first_name, last_name, .. } => {
+            println!("First name: {}, last name: {}", first_name, last_name);
+        }
+    }
+}
+
+#[test] 
+fn ignoring() {
+    let point = GeoPoint(1.0, 2.0);
+    match point {
+        GeoPoint(_, long) => {
+            println!("Long {}", long);
+        }
+    }
+
+    let value = 10;
+
+    match value {
+        10..= 100 => {
+            println!("value: {}", value);
+        }
+        _ => {
+            println!("value not valid");
+        }
+    }
+}
+
+#[test]
+fn test_match_expression() {
+    let value = 2;
+    let result = match value {
+        0 => "nol",
+        _ => "invalid"
+    };
+
+    println!("Result {}", result);
+}
+ 
