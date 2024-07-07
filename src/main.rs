@@ -1,4 +1,74 @@
 use std::{collections::btree_map::Values, mem, ops::RangeInclusive};
+use first::say_hellobro;
+use second::say_hellobro as say_hellobro_second;
+
+
+mod first_module;
+mod second_module;
+use first_module::say_hellomas;
+use second_module::say_hellomas as say_hellomas_second;
+
+// mengambil semua member
+// use first_module::*;
+// use first_module::{say_hellomas, say_hellodek};
+
+#[test]
+fn module_terpisah() {
+    say_hellomas();
+    say_hellomas_second();
+}
+
+
+mod first {
+    pub fn say_hellobro() {
+        println!("Hello World!");
+    }
+}
+
+mod second {
+    pub fn say_hellobro() {
+        println!("Hello World!");
+    }
+}
+
+#[test]
+fn test_use() {
+    // tanpa use
+    // first::say_hellobro();
+    // second::say_hellobro();
+
+    // dengan use
+    say_hellobro();
+    say_hellobro_second();
+
+}
+
+mod module {
+    // defaultnya private
+    // pub artinya public
+    pub struct User {
+        pub name: String,
+        pub email: String,
+        pub age: u8,
+    }
+
+    impl User {
+        pub fn say_hello(&self, name: &str) {
+            println!("Hello {}, my name is {}", name, self.name);
+        }
+    }
+}
+
+#[test]
+fn test_module() {
+    let user = module::User {
+        name: String::from("Dimas Saputro"),
+        email: String::from("emailku"),
+        age: 20,
+    };
+
+    user.say_hello("Bambang");
+} 
 
 fn main() {
     println!("Hello, world!");
