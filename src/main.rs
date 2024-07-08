@@ -1570,3 +1570,60 @@ fn test_vector() {
     println!("Vector: {:?}", doubled);
  }
 
+
+fn connect_database(host: Option<String>) {
+    match host {
+        Some(host) => {
+            println!("Connection to database at {}", host)
+        }
+        None => {
+            panic!("No database host provided")
+        }
+    }
+}
+
+#[test]
+fn test_unrecoverable_error() {
+    connect_database(None);
+}
+
+fn connect_cache(host: Option<String>) -> Result<String, String> {
+    match host {
+        Some(host) => Ok(host),
+        None => Err("No cache host provided".to_string())
+    }
+}
+
+fn connect_network(host: Option<String>) -> Result<String, String> {
+    match host {
+        Some(host) => Ok(host),
+        None => Err("No network host provided".to_string())
+    }
+}
+
+fn connect_app(host: Option<String>) -> Result<String, String> {
+    connect_cache(host.clone())?; // kalo error langsung mengembalikan error
+    connect_network(host.clone())?; // kalo error langsung mengembalikan error
+    Ok("Connected to application".to_string())
+}
+
+#[test]
+fn test_recoverable_error() {
+    let result = connect_cache(Some(String::from("youtube")));
+    match result {
+        Ok(host) => {
+            println!("Connected to {}", host)
+        } Err(err) => {
+            println!("Error connect: {}", err)
+        }
+    }
+
+    let result2 = connect_app(Some(String::from("tiktok")));
+    match result2 {
+        Ok(host) => {
+            println!("Connected to {}", host)
+        } Err(err) => {
+            println!("Error connect: {}", err)
+        }
+    }
+}
