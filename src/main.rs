@@ -1291,3 +1291,40 @@ fn where_clause() {
     println!("value: {}", point2.get_value2());
 }
 
+
+struct Apple {
+    quantity: u32,
+}
+
+use std::ops::Add;
+impl Add for Apple {
+    type Output = Apple;
+
+    fn add(self, rhs: Self) -> Self::Output {
+        Apple {
+            quantity: self.quantity + rhs.quantity,
+        }
+    }
+}
+
+#[test]
+fn overidable_operator() {
+    let apple1 = Apple {quantity: 2};
+    let apple2 = Apple {quantity: 3};
+
+    println!("apple1 + apple2 = {}", (apple1 + apple2).quantity);
+}
+
+fn double(x: Option<i32>) -> Option<i32> {
+    match x {
+        None => None,
+        Some(value) => Some(value * 2)
+    }
+}
+
+
+#[test]
+fn optional_value() {
+    let result = double(Some(3));
+    println!("{:?}", result);
+}
