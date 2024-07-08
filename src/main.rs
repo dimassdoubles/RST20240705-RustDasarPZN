@@ -1373,4 +1373,22 @@ fn comparing() {
     }
 }
 
+use core::fmt::Debug;
 
+impl Debug for SimplePerson {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("SimplePerson")
+        .field("name", &self.name)
+        .field("field 2", &self.name)
+        .finish()
+    }
+}
+
+#[test]
+fn test_format() {
+    let person = SimplePerson {
+        name: String::from("Dimas Saputro")
+    };
+
+    println!("{:?}", person);
+}
