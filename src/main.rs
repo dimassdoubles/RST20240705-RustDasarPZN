@@ -1,4 +1,5 @@
 use std::cmp::Ordering;
+use std::collections::{BTreeMap, BTreeSet, HashMap, HashSet, LinkedList, VecDeque};
 use std::{collections::btree_map::Values, fmt::format, mem, ops::RangeInclusive};
 use first::say_hellobro;
 use second::say_hellobro as say_hellobro_second;
@@ -1424,3 +1425,123 @@ fn closure_from_function() {
     print_with_filter(name, to_uppercase);
 }
  
+// sequence 
+
+#[test]
+fn test_vector() {
+    // menambah data ke belakang
+    let mut names = Vec::new();
+
+    names.push(String::from("Dimas"));
+    names.push(String::from("Saputro"));
+    names.push(String::from("Fitria"));
+    names.pop();
+
+    // for name in names {  // jika bukan refference akan memindahkan ownership
+    // ketika for looping selesai, names akan dihapus memori
+
+    for name in &names {
+        println!("{}", name);
+    }
+
+    println!("{:?}", names);
+}
+ 
+
+ #[test]
+ fn test_vec_deque() {
+    let mut names = VecDeque::<String>::new();
+
+    names.push_back(String::from("Saputro"));
+    names.push_front(String::from("Dimas"));
+    names.push_back(String::from("Fitria"));
+    names.pop_back();
+
+    for name in &names {
+        println!("{}", name)
+    }
+
+    println!("{:?}", names);
+ }
+
+ #[test]
+ fn test_linked_list() {
+    // efisien untuk penambahan dan pengurangan data
+    // performa kurang baik untuk akses data menggunakan index
+    let mut names: LinkedList<String> = LinkedList::new();
+
+    names.push_back(String::from("Dimas"));
+    names.push_back(String::from("Saputro"));
+
+    for name in &names {
+        println!("{}", name)
+    }
+
+    println!("{:?}", names);
+ }
+
+
+ #[test]
+ fn test_hash_map() {
+    // btreemap untuk key yang urut
+    // hashmap untuk key yang tidak urut
+
+    let mut hash_map: HashMap<String, String> = HashMap::new();
+    hash_map.insert(String::from("name"), String::from("Dimas"));
+    hash_map.insert(String::from("age"), String::from("20"));
+
+    let nama = hash_map.get("name");
+    let age = hash_map.get("age");
+
+    println!("Name: {}", nama.unwrap_or(&String::from("Saputro")));
+    println!("Age: {}", age.unwrap());
+ }
+
+ #[test]
+ fn test_b_tree_map() {
+    // btreemap untuk key yang urut
+    // hashmap untuk key yang tidak urut
+
+    let mut map: BTreeMap<String, String> = BTreeMap::new();
+    map.insert(String::from("name"), String::from("Dimas"));
+    map.insert(String::from("age"), String::from("20"));
+    map.insert(String::from("country"), String::from("Indonesia"));
+
+    let nama = map.get("name");
+    let age = map.get("age");
+    
+    for item in map {
+        println!("{} = {}", item.0, item.1);
+    }
+ }
+
+ #[test]
+ fn test_hash_set() {
+    let mut set: HashSet<String> = HashSet::new();
+    set.insert(String::from("Dimas"));
+    set.insert(String::from("Saputro"));
+    set.insert(String::from("Abdi"));
+    set.insert(String::from("Supermarket"));
+
+    for name in &set {
+        println!("{}", name)
+    }
+    
+    println!("{:?}", set);
+ }
+
+ #[test]
+ fn test_b_tree_set() {
+    let mut set: BTreeSet<String> = BTreeSet::new();
+    set.insert(String::from("Dimas"));
+    set.insert(String::from("Saputro"));
+    set.insert(String::from("Abdi"));
+    set.insert(String::from("Supermarket"));
+
+    for name in &set {
+        println!("{}", name)
+    }
+    
+    println!("{:?}", set);
+ }
+
