@@ -1,3 +1,4 @@
+use std::cmp::Ordering;
 use std::{collections::btree_map::Values, fmt::format, mem, ops::RangeInclusive};
 use first::say_hellobro;
 use second::say_hellobro as say_hellobro_second;
@@ -1328,3 +1329,48 @@ fn optional_value() {
     let result = double(Some(3));
     println!("{:?}", result);
 }
+
+use core::cmp::PartialEq;
+use core::cmp::PartialOrd;
+
+impl PartialEq for Apple {
+    fn eq(&self, other: &Self) -> bool {
+        self.quantity == other.quantity
+    }
+}
+
+impl PartialOrd for Apple {
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+        // manual
+        if self.quantity < other.quantity {
+            Some(Ordering::Less)
+        } else if self.quantity > other.quantity {
+            Some(Ordering::Greater)
+        } else {
+            Some(Ordering::Equal)
+        }
+        
+        // otomatis
+        // self.quantity.partial_cmp(&other.quantity)
+    }
+}
+
+#[test]
+fn comparing() {
+    let apple1 = Apple {quantity: 2};
+    let apple2 = Apple {quantity: 3};
+
+    if apple1 == apple2 {
+        println!("Apple sama")
+    } else {
+        println!("Apple tidak sama")
+    }
+
+    if apple1 > apple2 {
+        println!("Apple 1 lebih besar")
+    } else {
+        println!("Apple 2 lebih besar")
+    }
+}
+
+
