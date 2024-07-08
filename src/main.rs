@@ -1392,3 +1392,35 @@ fn test_format() {
 
     println!("{:?}", person);
 }
+
+#[test]
+fn test_closure() {
+    let sum: fn(i32, i32) -> i32 = |value1: i32, value2: i32| -> i32 {
+        value1 + value2
+    };
+
+    let result = sum(1, 2);
+    println!("Result: {}", result)
+}
+
+fn print_with_filter(value: String, filter: fn(String) -> String) {
+    let result = filter(value);
+    println!("Result: {}", result);
+}
+
+#[test]
+fn test_closure_as_parameter() {
+    let name = String::from("Dimas Saputro");
+    print_with_filter(name, |value: String| -> String {value.to_uppercase()});
+}
+
+fn to_uppercase(value: String) -> String {
+    value.to_uppercase()
+}
+
+#[test]
+fn closure_from_function() {
+    let name = String::from("Dimas Saputro");
+    print_with_filter(name, to_uppercase);
+}
+ 
