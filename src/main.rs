@@ -1545,3 +1545,28 @@ fn test_vector() {
     println!("{:?}", set);
  }
 
+ #[test]
+ fn test_iterator() {
+    let array: [i32; 5] = [1, 2, 3, 4, 5];
+    let mut iterator = array.iter();
+
+    while let Some(value) = iterator.next() {
+        println!("{}", value)
+    }
+
+    for item in iterator  {
+        println!("{}", item)
+    }
+ }
+
+ #[test]
+ fn test_iterator_method() {
+    let vector: Vec<i32> = vec![1, 2, 3, 4, 5, 6, 7, 8];
+    println!("Vector: {:?}", vector);
+
+    println!("Sum: {}", vector.iter().sum::<i32>());
+ 
+    let doubled: Vec<i32> = vector.iter().map(|x| x *2).collect();
+    println!("Vector: {:?}", doubled);
+ }
+
