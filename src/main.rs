@@ -1176,3 +1176,118 @@ impl CanSayGoodBye for SimpleMan {
 }
 
 impl CanSay for SimpleMan {}
+
+
+// struct Point<T = String> // default generic type pake '='
+struct Point<T> {
+    x: T,
+    y: T,
+}
+
+#[test]
+fn test_generic_struct() {
+    let point_int: Point<i32> = Point::<i32> {x: 1, y: 2};
+    let point_string: Point<String> = Point::<String> {x: String::from("Dimas"), y: String::from("Saputro")};
+
+    println!("{}", point_int.x);
+    println!("{}", point_string.x);
+
+}
+
+enum Value<T> {
+    NONE, 
+    VALUE(T),
+}
+
+#[test]
+fn test_generic_enum() {
+    let value = Value::<String>::VALUE(String::from("Dimas"));
+    match value {
+        Value::VALUE(value) => {
+            println!("{}", value);
+        }
+        _ => {
+            println!("Do nothing");
+        }
+    }
+}
+
+struct Offset<T: CanSayGoodBye> {
+    value: T,
+}
+
+#[test]
+fn generic_type_bound() {
+    let offset = Offset::<SimplePerson> {
+        value: SimplePerson { name: String::from("Dimas") },
+    };
+
+    println!("{}", offset.value.name);
+}
+
+fn min<T: PartialOrd>(value1: T, value2: T) -> T {
+    if value1 < value2 {
+        value1
+    } else {
+        value2
+    }
+}
+
+#[test]
+fn generic_function() {
+    min("hello", "world");
+    min(1, 2);
+}
+
+impl<T> Point<T> {
+    fn get_x(&self) -> &T {
+        &self.x
+    }
+
+    fn get_y(&self) -> &T {
+        &self.y
+    }
+}
+
+#[test]
+fn test_generic_method() {
+    let point = Point {x: 5, y: 5};
+    println!("x: {}", point.get_x());
+    println!("y: {}", point.get_y());
+}
+
+trait GetValue<T> {
+    fn get_value(&self) -> &T;
+}
+
+impl<T> GetValue<T> for Point<T> {
+    fn get_value(&self) -> &T {
+        &self.x
+    }
+}
+
+#[test]
+fn test_generic_trait() {
+    let point = Point {x: 1, y: 2};
+    println!("value: {}", point.get_value());
+}
+
+trait GetValue2<T> where T: PartialOrd {
+    fn get_value2(&self) -> &T;
+}
+
+impl<T> GetValue2<T> for Point<T> where T: PartialOrd {
+    fn get_value2(&self) -> &T {
+        &self.x
+    }
+}
+
+#[test]
+fn where_clause() {
+    let point = Point{x: 1, y: 2};
+    println!("value: {}", point.get_value2());
+
+    let point2 = Point {x: String::from("Dimas"), y: String::from("Saputro")};
+    println!("value: {}", point2.get_value2());
+}
+
