@@ -1627,3 +1627,38 @@ fn test_recoverable_error() {
         }
     }
 }
+
+fn longest<'a>(value1: &'a str, value2: &'a str) -> &'a str {
+    if value1.len() > value2.len() {
+        value1
+    } else {
+        value2
+    }
+}
+
+#[test]
+fn test_lifetime() {
+    let value1 = String::from("Dimas");
+    let value2 = String::from("Saputro");
+    let result = longest(&value1, &value2);
+    println!("result: {}", result);
+}
+
+#[derive(Debug, PartialEq, PartialOrd)]
+struct Company {
+    name: String, 
+    location: String,
+    website: String,
+}
+
+#[test]
+fn test_attribute_derive() {
+    let company = Company {
+        name: String::from("Cakra Buana"),
+        location: String::from("Semarang"),
+        website: String::from("cakrabuana"),
+    };
+
+    // derive Debug 
+    println!("{:?}", company);
+}
